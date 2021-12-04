@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode
+﻿using AdventOfCode.Utilities;
+
+namespace AdventOfCode
 {
     public static class ParseSubmarineCommandsUtility
     {
@@ -10,7 +12,7 @@
                 submarineCommands.Add(new SubmarineCommand
                 {
                     Command = ParseCommand(command),
-                    Unit = ParseUnit(command)
+                    Unit = ParseUnitsUtility.ParseContainsUnit(command)
                 });
             }
             return submarineCommands;
@@ -25,14 +27,6 @@
                 case var _ when line.Contains("up"): return CommandEnum.Up;
                 default: throw new Exception("Error parsing command");
             };
-        }
-
-        private static int ParseUnit(string line)
-        {
-            var unitString = line.Substring(line.IndexOf(' '));
-            if(int.TryParse(unitString, out var unit))
-                return unit;
-            throw new Exception("Error parsing unit");
         }
     }
 }

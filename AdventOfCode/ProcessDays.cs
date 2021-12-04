@@ -26,7 +26,11 @@
 
         public static void ProcessDayThree()
         {
-            return;
+            var fileLines = ReadTextFileUtility.ReadFileAsLines("Resources\\DayThree.txt");
+            var parsedDiagnosticReport = ParseDiagnosticReportUtility.ParseDiagnosticReport(fileLines);
+            var powerConsumption = DiagnosticHelper.GetPowerConsumption(parsedDiagnosticReport);
+
+            Console.WriteLine($"Day Three > Task One - {powerConsumption}");
         }
 
 

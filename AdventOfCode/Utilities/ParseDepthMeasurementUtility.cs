@@ -1,6 +1,8 @@
-﻿namespace AdventOfCode
+﻿using AdventOfCode.Utilities;
+
+namespace AdventOfCode
 {
-    public class ParseDepthMeasurementUtility
+    public static class ParseDepthMeasurementUtility
     {
         private static IList<DepthMeasurement> processedDepthMeasurements = new List<DepthMeasurement>();
 
@@ -10,7 +12,7 @@
             {
                 var depthMeasurement = new DepthMeasurement
                 {
-                    Unit = ParseUnit(line)
+                    Unit = ParseUnitsUtility.ParseUnit(line)
                 };
 
                 depthMeasurement.ChangeInUnit = CalculateChange(depthMeasurement.Unit);
@@ -20,13 +22,6 @@
             CalculateSlidingUnits();
 
             return processedDepthMeasurements;
-        }
-
-        private static int ParseUnit(string line)
-        {
-            if (int.TryParse(line, out var unit))
-                return unit;
-            throw new Exception("Error parsing unit");
         }
 
         private static int CalculateChange(int depthMeasurementUnit)
