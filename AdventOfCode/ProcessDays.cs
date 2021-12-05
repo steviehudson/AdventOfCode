@@ -29,10 +29,23 @@
             var fileLines = ReadTextFileUtility.ReadFileAsLines("Resources\\DayThree.txt");
             var parsedDiagnosticReport = ParseDiagnosticReportUtility.ParseDiagnosticReport(fileLines);
             var powerConsumption = DiagnosticHelper.GetPowerConsumption(parsedDiagnosticReport);
+            var lifeSupportRating = DiagnosticHelper.GetLifeSupportRating(parsedDiagnosticReport);
 
             Console.WriteLine($"Day Three > Task One - {powerConsumption}");
+            Console.WriteLine($"Day Three > Task Two - {lifeSupportRating}");
         }
 
+        public static void ProcessDayFour()
+        {
+            var fileLines = ReadTextFileUtility.ReadFileAsLines("Resources\\DayFour.txt");
+            var numberToDraw = ParseBingoValuesUtility.ParsedNumbersToDraw(fileLines[0]);
+            var boards = ParseBingoValuesUtility.ParsedBoards(fileLines);
+            var winningScore = BingoHelper.GetWinningScore(numberToDraw, boards);
+
+            Console.WriteLine($"Day Four > Task One - {winningScore}");
+            //Console.WriteLine($"Day Three > Task Two - {lifeSupportRating}");
+
+        }
 
     }
 }

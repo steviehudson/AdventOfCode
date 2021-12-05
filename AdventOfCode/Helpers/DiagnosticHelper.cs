@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using AdventOfCode.Utilities;
+using System.Collections;
+using System.Text;
 
 namespace AdventOfCode
 {
@@ -6,15 +8,28 @@ namespace AdventOfCode
     {
         private static BitArray gammaRate = new(12);
         private static BitArray epsilonRate = new(12);
+        private static BitArray oxygenGeneratorRating = new(12);
+        private static BitArray carbonDioxideScrubberRating = new(12);
 
-        public static int GetPowerConsumption(IList<BitArray> parsedDiagnosticReport)
+        public static decimal GetPowerConsumption(IList<BitArray> parsedDiagnosticReport)
         {
             CalculateRates(parsedDiagnosticReport);
 
-            var gammaRateToDecimal = ConvertRateToInt(gammaRate);
-            var epsilonRateToDecimal = ConvertRateToInt(epsilonRate);
+            var gammaRateToDecimal= ConvertRateToDecimal(gammaRate);
+            var epsilonRateToDecimal = ConvertRateToDecimal(epsilonRate);
 
             return gammaRateToDecimal * epsilonRateToDecimal;
+        }
+
+        public static decimal GetLifeSupportRating(IList<BitArray> parsedDiagnosticReport)
+        {
+            CalculateRates(parsedDiagnosticReport);
+            CalculateRatings(parsedDiagnosticReport);
+
+            var oxygenGeneratorRatingToDecimal = ConvertRateToDecimal(oxygenGeneratorRating);
+            var carbonDioxideScrubberRatingToDecimal = ConvertRateToDecimal(carbonDioxideScrubberRating);
+
+            return oxygenGeneratorRatingToDecimal * carbonDioxideScrubberRatingToDecimal;
         }
 
         private static void CalculateRates(IList<BitArray> report)
@@ -34,11 +49,34 @@ namespace AdventOfCode
             }
         }
 
-        private static int ConvertRateToInt(BitArray bitArray)
+        private static void CalculateRatings(IList<BitArray> parsedDiagnosticReport)
         {
-            int[] array = new int[1];
-            bitArray.CopyTo(array, 0);
-            return array[0];
+            oxygenGeneratorRating = CalculateRating(parsedDiagnosticReport, gammaRate);
+            carbonDioxideScrubberRating = CalculateRating(parsedDiagnosticReport, epsilonRate);
+        }
+
+        private static BitArray CalculateRating(IList<BitArray> ratings, BitArray rate)
+        {
+            var processedRatings = ratings;
+            for (int i = 0; processedRatings.Count > 1; i++)
+            {
+                var commonBit = rate[i];
+                processedRatings = processedRatings.Where(x => x.Get(i) == commonBit).ToList();
+            }
+
+            return processedRatings[0];
+        }
+
+        private static decimal ConvertRateToDecimal(BitArray bits)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < bits.Count; i++)
+            {
+                char c = bits[i] ? '1' : '0';
+                sb.Append(c);
+            }
+
+            return Convert.ToInt32(sb.ToString(), 2);
         }
     }
 }

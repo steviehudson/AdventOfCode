@@ -6,7 +6,7 @@ namespace AdventOfCode
 {
     public static class ParseDiagnosticReportUtility
     {
-        public static IList<BitArray> ParseDiagnosticReport(List<string> fileLines)
+        public static IList<BitArray> ParseDiagnosticReport(IList<string> fileLines)
         {            
             var diagnosticReport = new List<BitArray>();
 
